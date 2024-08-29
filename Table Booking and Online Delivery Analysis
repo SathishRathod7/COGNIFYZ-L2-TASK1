@@ -1,0 +1,42 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df=pd.read_csv('/content/Dataset .csv')
+df
+
+table_booking_percentage = (df['Has Table booking'] == 'Yes').mean() * 100
+online_delivery_percentage = (df['Has Online delivery'] == 'Yes').mean() * 100
+table_booking_percentage, online_delivery_percentage
+
+avg_rating_with_booking = df[df['Has Table booking'] == 'Yes']['Aggregate rating'].mean()
+avg_rating_without_booking = df[df['Has Table booking'] == 'No']['Aggregate rating'].mean()
+avg_rating_with_booking, avg_rating_without_booking
+
+price_range_delivery = df.groupby('Price range')['Has Online delivery'].apply(lambda x: (x == 'Yes').mean() * 100)
+price_range_delivery
+
+labels = ['Table Booking', 'Online Delivery']
+percentages = [table_booking_percentage, online_delivery_percentage]
+
+plt.figure(figsize=(8, 5))
+plt.bar(labels, percentages, color=['blue', 'orange'])
+plt.title('Percentage of Restaurants Offering Table Booking and Online Delivery')
+plt.ylabel('Percentage')
+plt.show()
+
+labels = ['With Table Booking', 'Without Table Booking']
+avg_ratings = [avg_rating_with_booking, avg_rating_without_booking]
+
+plt.figure(figsize=(8, 5))
+plt.bar(labels, avg_ratings, color=['green', 'red'])
+plt.title('Average Ratings of Restaurants with and without Table Booking')
+plt.ylabel('Average Rating')
+plt.show()
+
+price_range_delivery.plot(kind='bar', color='purple')
+plt.title('Online Delivery Availability by Price Range')
+plt.xlabel('Price Range')
+plt.ylabel('Percentage of Restaurants Offering Online Delivery')
+plt.show()
